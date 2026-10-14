@@ -1,0 +1,45 @@
+{
+  "name": "@riven-lab/sdk",
+  "version": "0.1.0",
+  "description": "The official TypeScript SDK for Riven Analytics.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Riven-Lab/riven-sdk.git"
+  },
+  "homepage": "https://github.com/Riven-Lab/riven-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/Riven-Lab/riven-sdk/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "@vitest/coverage-v8": "^3.2.4",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
