@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a problem with the Riven TypeScript SDK
+body:
+  - type: input
+    id: version
+    attributes:
+      label: SDK version
+      description: Which package version are you using?
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide a minimal reproduction. Remove project keys and user data.
+    validations:
+      required: true
