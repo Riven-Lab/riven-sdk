@@ -1,14 +1,14 @@
 import { RivenError } from "./errors.js";
 import { createTransport } from "./transport.js";
 import { validateEventName, validateProperties } from "./validation.js";
-import type { EventProperties, RivenClientOptions } from "./types.js";
+import type { EventProperties, RivenClientOptions, TrackResult } from "./types.js";
 
 const DEFAULT_TIMEOUT_MS = 10_000;
 const DEFAULT_INGESTION_PATH = "/v1/events";
 
 export interface RivenClient {
-  /** Record and immediately send one event. Rejects when input or the request fails. */
-  track(name: string, properties?: EventProperties): Promise<void>;
+  /** Record one event and resolve with its server-assigned ID after acceptance. */
+  track(name: string, properties?: EventProperties): Promise<TrackResult>;
 }
 
 export function createClient(options: RivenClientOptions): RivenClient {
@@ -36,7 +36,11 @@ export function createClient(options: RivenClientOptions): RivenClient {
   if (typeof options.projectKey !== "string" || !options.projectKey.trim()) {
     throw new RivenError("projectKey must be a non-empty string.", { code: "INVALID_CONFIGURATION" });
   }
-  if (options.projectKey !== options.projectKey.trim() || /[\r\n]/.test(options.projectKey)) {
+  if (
+    options.projectKey !== options.projectKey.trim() ||
+    options.projectKey.includes(String.fromCharCode(10)) ||
+    options.projectKey.includes(String.fromCharCode(13))
+  ) {
     throw new RivenError("projectKey must not contain surrounding whitespace or line breaks.", {
       code: "INVALID_CONFIGURATION"
     });
@@ -99,7 +103,7 @@ export function createClient(options: RivenClientOptions): RivenClient {
           code: "INVALID_CONFIGURATION"
         });
       }
-      await transport.send({ name, properties, timestamp: timestamp.toISOString() });
+      return transport.send({ name, properties, timestamp: timestamp.toISOString() });
     }
   };
 }
