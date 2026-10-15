@@ -7,5 +7,6 @@ export type {
   EventProperties,
   JsonValue,
   RivenClientOptions,
-  TrackOptions
+  TrackOptions,
+  TrackResult
 } from "./types.js";
